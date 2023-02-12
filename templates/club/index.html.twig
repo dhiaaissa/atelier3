@@ -1,0 +1,76 @@
+
+
+{% block body %}
+
+
+
+
+<table border="2">
+    <thead>
+        <tr>
+            <th>Reference</th>
+            <th>Titre</th>
+            <th>Description</th>
+            <th>Date de début</th>
+            <th>Date de fin</th>
+            <th>Nombre de participants</th>
+            <th>Participation</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for lists in list %}
+            <tr>
+                <td>{{ lists.ref }}</td>
+                <td>{{ lists.Titre|upper }}</td>
+                <td>{{ lists.Description }}</td>
+                <td>{{ lists.date_debut }}</td>
+                <td>{{ lists.date_fin }}</td>
+                <td>{{ lists.nb_participants}}</td>
+                <td>{% if lists.nb_participants == 0 %}
+                    <form method="post" action="{{ path('get_name',{'name':lists.Titre})}}">
+                      <button type="submit">Participer</button>
+                    </form>
+                    {% endif %}
+                </td>
+                
+            
+        
+
+                
+            </tr>
+          
+        {% endfor %}
+     
+    </tbody>
+</table>
+
+<h3>Il y a {{list|length}} formation    </h3>
+<h3>les formation qui termine par theorique</h3>
+{% for lists in list %} 
+
+{% if lists.Description ends with 'theorique' %}
+ <h3>{{ lists.Titre}} </h3>
+{% endif %}
+{% endfor %}
+
+{% set max=0 %}
+{% set titre="" %}
+{% for lists in list %}
+    {% if lists.nb_participants > max %}
+            {% set max = lists.nb_participants %}
+            {% set titre=lists.Titre %}
+    {% endif %}
+{% endfor %}
+<H3>Les formations avec le plus grand nombre de participants:  {{ titre  }} </H3>
+   
+       {% set nbTotal=0 %}
+        {% for lists in list %}
+        {% set nbTotal =nbTotal+ lists.nb_participants  %}
+       {% endfor %}
+       <h3>Nombre total de participants:     {{ nbTotal}} </h3>
+
+
+
+
+
+{% endblock %}
